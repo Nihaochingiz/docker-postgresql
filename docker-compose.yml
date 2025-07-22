@@ -3,15 +3,16 @@ version: '3.8'
 services:
   postgres:
     image: postgres:latest
-    container_name: postgres_container
+    container_name: postgres_db
     environment:
-      POSTGRES_USER: myuser
-      POSTGRES_PASSWORD: mypassword
-      POSTGRES_DB: mydatabase
+      POSTGRES_USER: app_user      # Пользователь (будет создан автоматически)
+      POSTGRES_PASSWORD: mysecretpassword
+      POSTGRES_DB: app_db          # БД (будет создана автоматически)
     ports:
-      - "5433:5432"  
+      - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     restart: unless-stopped
 
 volumes:
