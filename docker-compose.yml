@@ -1,19 +1,21 @@
-version: '3.8'
-
 services:
   postgres:
-    image: postgres:latest
-    container_name: postgres_db
+    image: postgres:15-alpine
+    container_name: my-postgres
     environment:
-      POSTGRES_USER: app_user      # Пользователь (будет создан автоматически)
-      POSTGRES_PASSWORD: mysecretpassword
-      POSTGRES_DB: app_db          # БД (будет создана автоматически)
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-mysecretpassword}
+      POSTGRES_USER: ${DB_USER:-myuser}
+      POSTGRES_DB: ${DB_NAME:-mydatabase}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-myuser}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
 volumes:
   postgres_data:
