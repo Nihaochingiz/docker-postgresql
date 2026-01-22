@@ -1,5 +1,8 @@
 # 🐘 PostgreSQL в Docker - Быстрый старт
-
+```bash
+git clone https://github.com/Nihaochingiz/docker-postgresql
+cd docker-postgresql
+```
 ## 🚀 Запуск контейнера
 ```bash
 docker-compose up -d
