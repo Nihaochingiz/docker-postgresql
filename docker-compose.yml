@@ -7,9 +7,10 @@ services:
       POSTGRES_USER: ${DB_USER:-myuser}
       POSTGRES_DB: ${DB_NAME:-mydatabase}
     ports:
-        - "${DB_PORT:-5433}:5432"
+      - "${DB_PORT:-5433}:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql/data
+      # Для PostgreSQL 18+ монтируем родительскую директорию
+      - postgres_data:/var/lib/postgresql
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USER:-myuser}"]
